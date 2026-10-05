@@ -14,3 +14,78 @@ describe "Tests de Tito" {
     assert.equals(10, tito.dosisConsumida())
   }
 }
+
+describe "Bebidas" {
+
+
+test "El whisky calcula su rendimiento" {
+    assert.that(whisky.rendimientoQueOtorga(10) == 0.3486784401)
+}
+
+test "El terere calcula su rendimiento" {
+    assert.that(terere.rendimientoQueOtorga(10) == 1)
+}
+
+test "El cianuro siempre tiene rendimiento 0" {
+    assert.that(cianuro.rendimientoQueOtorga(10) == 0)
+}
+
+test "El licuado aumenta sus nutrientes al agregar un ingrediente" {
+    licuadoDeFrutas.agregarIngrediente(20)
+
+    assert.that(licuadoDeFrutas.rendimientoQueOtorga(1000) == 20)
+}
+
+test "El licuado calcula el rendimiento según la dosis" {
+    licuadoDeFrutas.agregarIngrediente(20)
+
+    assert.that(licuadoDeFrutas.rendimientoQueOtorga(500) == 10)
+}
+
+test "El agua saborizada calcula su rendimiento con whisky" {
+    aguaSaborizada.cambiarBebida(whisky)
+
+    assert.that(
+        aguaSaborizada.rendimientoQueOtorga(10) == 1 + whisky.rendimientoQueOtorga(2.5)
+    )
+}
+
+test "El coctel multiplica el rendimiento de sus bebidas" {
+    coctel.agregarBebida(whisky)
+
+    assert.that(
+        coctel.rendimientoQueOtorga(10) == 0.3486784401 * 0.3486784401
+    )
+}
+
+test "El coctel da 0 si contiene cianuro" {
+    coctel.agregarBebida(cianuro)
+
+    assert.that(coctel.rendimientoQueOtorga(10) == 0)
+}
+
+test "Tito consume una bebida" {
+    tito.consumir(10, whisky)
+
+    assert.that(tito.sustanciaActual() == whisky)
+    assert.that(tito.dosisConsumida() == 10)
+}
+
+test "Tito obtiene el rendimiento de la bebida que consumió" {
+    tito.consumir(10, whisky)
+
+    assert.that(tito.rendimiento() == whisky.rendimientoQueOtorga(10))
+}
+
+test "Tito calcula su velocidad" {
+    tito.consumir(10, whisky)
+
+    assert.that(
+        tito.velocidad() == tito.rendimiento() * tito.inerciaBase() / tito.peso()
+    )
+}
+
+}
+
+
+
